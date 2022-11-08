@@ -1,54 +1,19 @@
-﻿public class PrimeGenerator
+﻿private static void PutUncrossedIntegersIntoResult()
 {
-    private static bool[] isCrossed;
-    private static int[] result;
-    public static int[] GeneratePrimeNumbers(int maxValue)
+    result = new int[NumberOfUncrossedIntegers()];
+    for (int j = 0, i = 2; i < isCrossed.Length; i++)
     {
-        if (maxValue < 2)
-            return new int[0];
-        else
-        {
-            InitializeArrayOfIntegers(maxValue);
-            CrossOutMultiples();
-            PutUncrossedIntegersIntoResult();
-            return result;
-        }
+        if (NotCrossed(i))
+            result[j++] = i;
     }
-    private static void InitializeArrayOfIntegers(int maxValue)
+}
+private static int NumberOfUncrossedIntegers()
+{
+    int count = 0;
+    for (int i = 2; i < isCrossed.Length; i++)
     {
-        isCrossed = new bool[maxValue + 1];
-        for (int i = 2; i < isCrossed.Length; i++)
-            isCrossed[i] = false;
+        if (NotCrossed(i))
+            count++; // увеличить счетчик
     }
-    private static void CrossOutMultiples()
-    {
-        int maxPrimeFactor = CalcMaxPrimeFactor();
-        for (int i = 2; i < maxPrimeFactor + 1; i++)
-        {
-            if (NotCrossed(i))
-                CrossOutputMultiplesOf(i);
-        }
-    }
-    private static int CalcMaxPrimeFactor()
-    {
-        // Вычеркиваем все кратные p, где p – простое число. Таким
-        // образом, любое вычеркнутое число разлагается в произведение
-        // множителей p и q. Если p > sqrt из размера массива, то q не
-        // может быть больше 1. Таким образом, p – максимальный простой
-        // множитель всех чисел в массиве и одновременно верхний предел
-        // итераций.
-        double maxPrimeFactor = Math.Sqrt(isCrossed.Length) + 1;
-        return (int)maxPrimeFactor;
-    }
-    private static void CrossOutputMultiplesOf(int i)
-    {
-        for (int multiple = 2 * i;
-        multiple < isCrossed.Length;
-        multiple += i)
-            isCrossed[multiple] = true;
-    }
-    private static bool NotCrossed(int i)
-    {
-        return isCrossed[i] == false;
-    }
+    return count;
 }
